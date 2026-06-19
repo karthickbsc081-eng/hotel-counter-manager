@@ -17,13 +17,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hotel-counter-secret-2024-change-in-prod')
 app.config['DATABASE'] = os.environ.get('DATABASE', 'counter.db')
-print("Database:", os.path.abspath(app.config["DATABASE"]))
-with app.app_context():
-    def init_db():
-    print("Initializing database...")
-    db = sqlite3.connect(app.config['DATABASE'])
-    ...
-    init_db()
+
 # ─── Database ─────────────────────────────────────────────────────────────────
 
 def get_db():
@@ -1157,8 +1151,7 @@ render();
 # ─── Entry Point ──────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    init_db()
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('DEBUG', 'false').lower() == 'true'
     print(f"\n{'='*50}")
