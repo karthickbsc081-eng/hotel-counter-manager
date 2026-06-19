@@ -105,6 +105,11 @@ def init_db():
     db.commit()
     db.close()
 
+
+# Initialize DB on startup (works with Gunicorn)
+init_db()
+print("Database initialized")
+
 # ─── Auth ─────────────────────────────────────────────────────────────────────
 
 def make_token(user):
@@ -1152,12 +1157,8 @@ render();
 # ─── Entry Point ──────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-    init_db()
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('DEBUG', 'false').lower() == 'true'
-    print(f"\n{'='*50}")
-    print(f"  Hotel Counter Manager")
-    print(f"  Running at: http://localhost:{port}")
-    print(f"  Default login: ADMIN / admin123")
-    print(f"{'='*50}\n")
+
+    print("Starting Hotel Counter Manager")
     app.run(host='0.0.0.0', port=port, debug=debug)
