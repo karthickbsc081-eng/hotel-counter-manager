@@ -642,7 +642,7 @@ function renderLogin() {
   box.appendChild(h('div', {class:'fg'}, h('label', {}, 'Password'), pwIn));
   box.appendChild(btn);
   box.appendChild(err);
-  box.appendChild(h('div', {class:'login-hint'}, 'Default admin: ADMIN / admin123'));
+  box.appendChild(h('div', {class:'login-hint'}, 'Default admin: ADMIN / admin'));
   wrap.appendChild(box);
   pwIn.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   setTimeout(() => empIn.focus(), 50);
