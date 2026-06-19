@@ -16,7 +16,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hotel-counter-secret-2024-change-in-prod')
-app.config['DATABASE'] = os.environ.get('DATABASE', '/var/data/counter.db')
+app.config['DATABASE'] = os.environ.get('DATABASE', 'counter.db')
 
 # ─── Database ─────────────────────────────────────────────────────────────────
 
@@ -1153,50 +1153,6 @@ render();
 </script>
 </body>
 </html>"""
-
-
-# ─── Extra Features Added ─────────────────────────────────────────────────────
-
-@app.route('/api/auth/change-password', methods=['POST'])
-@require_auth
-def change_password():
-    data = request.get_json() or {}
-    old_password = data.get('old_password', '')
-    new_password = data.get('new_password', '')
-
-    db = get_db()
-    user = db.execute(
-        "SELECT * FROM users WHERE emp_id=?",
-        (g.user['sub'],)
-    ).fetchone()
-
-    if not user or not check_password_hash(user['password_hash'], old_password):
-        return jsonify({'error': 'Current password incorrect'}), 400
-
-    db.execute(
-        "UPDATE users SET password_hash=? WHERE emp_id=?",
-        (generate_password_hash(new_password), g.user['sub'])
-    )
-    db.commit()
-    return jsonify({'ok': True, 'message': 'Password changed'})
-
-
-@app.route('/api/export/json')
-@require_auth
-@require_admin
-def export_json():
-    db = get_db()
-    rows = db.execute("SELECT * FROM orders ORDER BY id DESC").fetchall()
-    return jsonify([dict(r) for r in rows])
-
-
-@app.route('/api/health')
-def health():
-    return jsonify({
-        "status": "ok",
-        "database": app.config["DATABASE"]
-    })
-
 
 # ─── Entry Point ──────────────────────────────────────────────────────────────
 
