@@ -547,6 +547,7 @@ const ICON_KEYS = Object.keys(ICONS);
 // ── State ──────────────────────────────────────────────────────────────────
 let state = {
   user: null, token: null,
+  currentMain: 'staff',
   currentCounter: 'omelette', adminCounter: 'omelette',
   currentStatus: 'pending', adminSection: 'varieties',
   selectedVariety: null, selectedIcon: 'egg',
